@@ -1,3 +1,405 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+:root {
+  --bg: #eff6ff;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --text: #111827;
+  --text-muted: #475569;
+  --border: #e2e8f0;
+  --border-muted: #cbd5e1;
+  --primary: #2563eb;
+  --primary-strong: #1d4ed8;
+  --danger: #dc2626;
+  --danger-strong: #b91c1c;
+  --shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+  --radius: 1rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.page-layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  font-size: clamp(1.6rem, 2.4vw, 2.25rem);
+}
+
+.page-header p {
+  margin: 0.65rem 0 0;
+  color: var(--text-muted);
+  max-width: 46rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 0.9rem;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button.primary {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+}
+
+.button.primary:hover {
+  background: var(--primary-strong);
+}
+
+.button.secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-muted);
+}
+
+.button.secondary:hover {
+  background: #f1f5f9;
+}
+
+.button.danger {
+  background: var(--danger);
+  color: #ffffff;
+  box-shadow: 0 10px 18px rgba(220, 38, 38, 0.18);
+}
+
+.button.danger:hover {
+  background: var(--danger-strong);
+}
+
+.alert {
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  margin-bottom: 1.25rem;
+}
+
+.table-card,
+.form-card,
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+
+.table th,
+.table td {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.table th {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: var(--surface-muted);
+}
+
+.table td.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.table a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
+
+.field-group {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.5rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-muted);
+  border-radius: 0.9rem;
+  padding: 0.95rem 1rem;
+  color: var(--text);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.form-field textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.image-preview {
+  margin-top: 1.5rem;
+}
+
+.image-preview p {
+  margin: 0 0 0.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.image-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.image-grid img {
+  width: 100%;
+  min-height: 140px;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.button.full {
+  width: 100%;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: #eff6ff;
+}
+
+.auth-card {
+  width: min(520px, 100%);
+  padding: 2rem;
+}
+
+.auth-card h1 {
+  margin: 0 0 0.75rem;
+}
+
+.auth-card p {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table {
+    min-width: 100%;
+  }
+}
+
+/* Modal confirmation overlay (centered) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 60;
+}
+
+.confirm-modal {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  width: min(100%, 520px);
+  max-width: 92vw;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  border: 1px solid var(--border);
+}
+
+.confirm-modal h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Global upload card styles (used by category and product new-item forms) */
+.upload-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.upload-card {
+  width: 100%;
+  max-width: 320px;
+  border: 1px dashed var(--border-muted);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  background: var(--surface-muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.upload-card:focus-visible,
+.upload-card:hover {
+  border-color: var(--primary);
+  background: rgba(37, 99, 235, 0.06);
+  outline: none;
+}
+
+.upload-card-content {
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.upload-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(148,163,184,0.35);
+  background: #fff;
+}
+
+.upload-placeholder {
+  padding: 1.25rem 0.5rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.upload-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-card-title { font-weight: 700; color: var(--text); }
+.upload-card-description { font-size: 0.95rem; }
+.upload-card-file { font-size: 0.88rem; color: var(--text-muted); }
+

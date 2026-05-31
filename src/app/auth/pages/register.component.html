@@ -1,0 +1,52 @@
+<main class="auth-page">
+  <section class="auth-card form-card">
+    <header class="page-header">
+      <div>
+        <h1>Registro</h1>
+        <p>Crea tu cuenta para acceder al panel administrativo.</p>
+      </div>
+    </header>
+
+    <div *ngIf="error()" class="alert">{{ error() }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="register()" class="field-group">
+      <label class="form-field">
+        Nombre
+        <input type="text" formControlName="name" placeholder="Nombre" required />
+      </label>
+
+      <label class="form-field">
+        Apellido
+        <input type="text" formControlName="lastname" placeholder="Apellido" required />
+      </label>
+
+      <label class="form-field">
+        Teléfono
+        <input type="tel" formControlName="phone" placeholder="923433255" required />
+      </label>
+
+      <label class="form-field">
+        Correo electrónico
+        <input type="email" formControlName="email" placeholder="correo@ejemplo.com" required />
+      </label>
+
+      <label class="form-field">
+        Contraseña
+        <input type="password" formControlName="password" placeholder="********" required />
+      </label>
+
+      <label class="form-field">
+        Confirmar contraseña
+        <input type="password" formControlName="confirmPassword" placeholder="********" required />
+      </label>
+
+      <button type="submit" class="button primary full" [disabled]="saving() || !passwordsMatch()">
+        Registrarme
+      </button>
+    </form>
+
+    <p class="small-text">
+      ¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a>
+    </p>
+  </section>
+</main>

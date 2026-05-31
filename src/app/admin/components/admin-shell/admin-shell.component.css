@@ -1,0 +1,28 @@
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  gap: 1rem;
+}
+
+.admin-content {
+  padding: 1.5rem;
+  background: #f7f7fb;
+}
+
+.admin-header {
+  margin-bottom: 1.5rem;
+}
+
+.admin-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+}
+
+.admin-main {
+  min-height: 70vh;
+  border-radius: 1rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.04);
+}

@@ -1,0 +1,30 @@
+<main class="auth-page">
+  <section class="auth-card form-card">
+    <header class="page-header">
+      <div>
+        <h1>Iniciar sesión</h1>
+        <p>Accede al panel administrativo con tu correo y contraseña.</p>
+      </div>
+    </header>
+
+    <div *ngIf="error()" class="alert">{{ error() }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="login()" class="field-group">
+      <label class="form-field">
+        Correo electrónico
+        <input type="email" formControlName="email" placeholder="correo@ejemplo.com" required />
+      </label>
+
+      <label class="form-field">
+        Contraseña
+        <input type="password" formControlName="password" placeholder="********" required />
+      </label>
+
+      <button type="submit" class="button primary full" [disabled]="saving()">Acceder</button>
+    </form>
+
+    <p class="small-text">
+      ¿No tienes cuenta? <a routerLink="/auth/register">Regístrate</a>
+    </p>
+  </section>
+</main>

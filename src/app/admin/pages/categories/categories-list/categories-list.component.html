@@ -1,0 +1,65 @@
+<section class="page-layout">
+  <header class="page-header">
+    <div>
+      <h2>Categorías</h2>
+      <p>Gestiona las categorías del catálogo.</p>
+    </div>
+
+    <button class="button primary" type="button" (click)="navigateToNew()">
+      Nueva categoría
+    </button>
+  </header>
+
+  <div *ngIf="error()" class="alert">{{ error() }}</div>
+
+  <div class="table-card table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Imagen</th>
+          <th>Actualizado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories()">
+          <td>{{ category.id }}</td>
+          <td>{{ category.name }}</td>
+          <td>{{ category.description }}</td>
+          <td>
+            <img
+              *ngIf="category.image"
+              [ngSrc]="category.image"
+              width="40"
+              height="40"
+              alt="{{ category.name }}"
+            />
+          </td>
+          <td>{{ category.updated_at }}</td>
+          <td class="actions">
+            <button type="button" class="button secondary" (click)="navigateToEdit(category)">Editar</button>
+            <button type="button" class="button danger" (click)="promptDeleteCategory(category)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="isConfirmVisible()">
+    <section class="confirm-modal">
+      <h3>Eliminar categoría</h3>
+      <p>
+        ¿Estás seguro que deseas eliminar la categoría
+        <strong>{{ confirmationCategory()?.name }}</strong>?
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="button secondary" (click)="closeDeleteConfirmation()">Cancelar</button>
+        <button type="button" class="button danger" (click)="confirmDeleteCategory()">Eliminar</button>
+      </div>
+    </section>
+  </div>
+</section>

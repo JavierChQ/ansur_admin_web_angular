@@ -1,0 +1,55 @@
+<section class="products-page page-layout">
+  <div class="table-card">
+    <header class="page-header">
+      <div>
+        <h2>Productos</h2>
+        <p>Revisa el catálogo y administra el inventario.</p>
+      </div>
+      <a class="button primary" routerLink="new">Nuevo producto</a>
+    </header>
+
+    <div *ngIf="error()" class="alert">{{ error() }}</div>
+    <div *ngIf="isLoading()">Cargando productos...</div>
+
+    <div *ngIf="!isLoading() && products().length > 0" class="table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products()">
+          <td>{{ product.name }}</td>
+          <td>{{ getCategoryName(product.id_category) }}</td>
+          <td>{{ product.price | currency:'USD':'symbol':'1.0-0' }}</td>
+          <td class="actions">
+            <a class="button secondary" [routerLink]="[product.id]">Editar</a>
+            <button type="button" class="button danger" (click)="promptDeleteProduct(product)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p *ngIf="!isLoading() && !products().length" class="empty-state">No hay productos registrados.</p>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="isConfirmVisible()">
+    <section class="confirm-modal">
+      <h3>Eliminar producto</h3>
+      <p>
+        ¿Estás seguro que deseas eliminar el producto
+        <strong>{{ confirmationProduct()?.name }}</strong>?
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="button secondary" (click)="closeDeleteConfirmation()">Cancelar</button>
+        <button type="button" class="button danger" (click)="confirmDeleteProduct()">Eliminar</button>
+      </div>
+    </section>
+  </div>
+</section>

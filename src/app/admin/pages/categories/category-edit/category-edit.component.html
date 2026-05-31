@@ -1,0 +1,70 @@
+<section class="edit-page page-layout">
+  <div class="form-card">
+  <header class="page-header">
+    <div>
+      <h2>{{ isNew() ? 'Nueva categoría' : 'Editar categoría' }}</h2>
+      <p>Define el nombre, descripción e imagen para la categoría.</p>
+    </div>
+  </header>
+
+  <div *ngIf="error()" class="alert">{{ error() }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="saveCategory()">
+    <div class="field-group">
+      <label class="form-field">
+        Nombre
+        <input formControlName="name" required />
+      </label>
+
+      <label class="form-field">
+        Descripción
+        <textarea formControlName="description" rows="4"></textarea>
+      </label>
+    </div>
+
+    <div *ngIf="isNew()" class="upload-card">
+      <input #newCategoryImageInput type="file" accept="image/*" (change)="updateFile($event)" hidden />
+      <div class="upload-card-content" (click)="newCategoryImageInput.click()" role="button" tabindex="0" (keydown.enter)="newCategoryImageInput.click()">
+        <ng-container *ngIf="preview(); else catPlaceholder">
+          <img [src]="preview()" alt="Previsualización" />
+        </ng-container>
+        <ng-template #catPlaceholder>
+          <div class="upload-placeholder">Seleccionar imagen</div>
+        </ng-template>
+        <div class="upload-actions">
+          <button type="button" class="button secondary small" (click)="newCategoryImageInput.click(); $event.stopPropagation()">Seleccionar</button>
+          <span *ngIf="form.controls.image.value as pendingImage" class="replacement-name">{{ pendingImage.name }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- preview removed: image will be shown inside the upload card -->
+
+    <div *ngIf="existingImage()" class="image-preview">
+      <p>Imagen actual:</p>
+      <img [src]="existingImage()" alt="Imagen de categoría" />
+      <div class="image-actions">
+        <input #replaceCategoryInput type="file" accept="image/*" (change)="updateFile($event)" hidden />
+        <button type="button" class="button secondary small" (click)="replaceCategoryInput.click()">Reemplazar</button>
+        <span *ngIf="form.controls.image.value as pendingImage" class="replacement-name">{{ pendingImage.name }}</span>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button type="button" class="button secondary" (click)="cancel()">Cancelar</button>
+      <button type="submit" class="button primary" [disabled]="isSaving()">Guardar</button>
+    </div>
+  </form>
+
+  <div *ngIf="showConfirm()" class="modal-backdrop">
+    <div class="confirm-modal">
+      <h3>Confirmar guardado</h3>
+      <p>¿Deseas guardar los cambios de la categoría?</p>
+      <div class="modal-actions">
+        <button type="button" class="button secondary" (click)="confirmCancel()">Cancelar</button>
+        <button type="button" class="button primary" (click)="confirmAccept()" [disabled]="isSaving()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

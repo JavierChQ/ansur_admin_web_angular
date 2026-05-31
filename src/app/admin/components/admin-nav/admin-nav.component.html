@@ -1,0 +1,17 @@
+<nav class="nav-panel">
+  <div class="brand">
+    <span>Admin</span>
+  </div>
+
+  <ul>
+    <li><a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a></li>
+    <li><a routerLink="/admin/orders" routerLinkActive="active">Pedidos</a></li>
+    <li><a routerLink="/admin/products" routerLinkActive="active">Productos</a></li>
+    <li><a routerLink="/admin/categories" routerLinkActive="active">Categorías</a></li>
+    <li><a routerLink="/admin/customers" routerLinkActive="active">Clientes</a></li>
+  </ul>
+
+  <button type="button" class="logout-button" (click)="logout()">
+    Cerrar sesión
+  </button>
+</nav>

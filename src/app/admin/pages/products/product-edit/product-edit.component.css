@@ -1,0 +1,71 @@
+/* Styles migrated to src/styles.css */
+:host {
+  display: block;
+}
+
+/* Make existing image items display horizontally with uniform thumbnails */
+.image-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Upload card styles moved to global `src/styles.css` */
+
+.existing-image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 0.75rem;
+}
+
+.existing-image-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  flex: none;
+}
+
+.image-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.replacement-name {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.button.small {
+  min-height: 2rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .existing-image-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .existing-image-item img {
+    width: 100%;
+    height: 180px;
+    flex: none;
+  }
+}

@@ -1,0 +1,23 @@
+<div class="admin-layout">
+  <app-admin-nav></app-admin-nav>
+
+  <section class="admin-content">
+    <header class="admin-header">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <h1>Panel de administración</h1>
+          <p>Accede a pedidos, productos y clientes desde aquí.</p>
+        </div>
+        <div style="text-align:right">
+          <small>Hola, {{ authService.user?.name || authService.user?.email }}</small>
+          <br />
+          <small>Rol: {{ authService.user?.roles?.[0]?.id || authService.user?.role || 'Desconocido' }}</small>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <router-outlet></router-outlet>
+    </main>
+  </section>
+</div>
