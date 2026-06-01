@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 
 const app = express();
 
@@ -14,7 +13,7 @@ app.use(express.static(distPath));
 app.use(express.static(publicPath));
 
 // SPA routing: redirect all non-file requests to index.html
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
