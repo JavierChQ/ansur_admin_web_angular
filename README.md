@@ -31,10 +31,47 @@ ng generate --help
 To build the project run:
 
 ```bash
-ng build
+npm run build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Environment variables
+
+This project supports runtime configuration through a `.env` file in the repository root.
+
+- Copy `.env.example` to `.env` and update the values for your environment.
+- The `npm run prepare-env` step generates `public/env.js` before startup and build.
+
+## Deploying to Railway
+
+Railway uses the `Procfile` and the `PORT` environment variable to start the app.
+
+1. Set the Railway build command to:
+
+```bash
+npm run build
+```
+
+2. Set the Railway start command to:
+
+```bash
+npm start
+```
+
+3. Configure these environment variables in Railway:
+
+- `API_BASE_URL`
+- `APP_TITLE`
+- `ENVIRONMENT_NAME`
+
+4. The project uses a `Procfile` with:
+
+```text
+web: npm start
+```
+
+5. Railway provides `PORT` automatically, and the app serves the static `dist/ansur_admin_web_angular` output using `serve`.
 
 ## Running unit tests
 
