@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "prepare-env": "node scripts/generate-env.js",
-    "start": "npm run prepare-env && npm run build && serve -s dist/ansur_admin_web_angular -l $PORT",
+    "start": "npm run prepare-env && npm run build && serve -s dist/ansur_admin_web_angular/browser -l $PORT",
     "build": "npm run prepare-env && ng build",
     "watch": "npm run prepare-env && ng build --watch --configuration development",
     "test": "npm run prepare-env && ng test"
