@@ -1,7 +1,10 @@
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv');
 
 const app = express();
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const distPath = path.join(__dirname, 'dist/ansur_admin_web_angular/browser');
 const publicPath = path.join(__dirname, 'public');
