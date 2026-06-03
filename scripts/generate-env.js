@@ -8,8 +8,8 @@ const targetPath = path.resolve(process.cwd(), 'public', 'env.js');
 const parsed = dotenv.config({ path: envPath }).parsed || {};
 
 const env = {
-  API_BASE_URL: parsed.API_BASE_URL || 'http://localhost:3000/api',
-  APP_TITLE: parsed.APP_TITLE || 'AnsurAdminWebAngular',
+  API_BASE_URL: parsed.API_BASE_URL || 'http://localhost:3000',
+  APP_TITLE: parsed.APP_TITLE || 'Ansur Admin',
   ENVIRONMENT_NAME: parsed.ENVIRONMENT_NAME || 'development',
 };
 
