@@ -17,6 +17,7 @@
         <tr>
           <th>Nombre</th>
           <th>Categoría</th>
+          <th>Disponible</th>
           <th>Precio compra</th>
           <th>Precio venta</th>
           <th>Acciones</th>
@@ -26,12 +27,17 @@
         <tr *ngFor="let product of products()">
           <td>{{ product.name }}</td>
           <td>{{ getCategoryName(product.id_category) }}</td>
+          <td>
+            {{ getAvailable(product.id) }}
+            <span *ngIf="isOutOfStock(product.id)" class="stock-badge out">Agotado</span>
+          </td>
           <td>{{ product.purchase_price | currency:'USD':'symbol':'1.2-2' }}</td>
           <td>
             {{ product.sale_price | currency:'USD':'symbol':'1.2-2' }}
             <span *ngIf="product.price_warning" class="price-warning-badge" [title]="product.price_warning">!</span>
           </td>
           <td class="actions">
+            <button type="button" class="button secondary" (click)="openRestockModal(product)">Ingresar</button>
             <a class="button secondary" [routerLink]="[product.id]">Editar</a>
             <button type="button" class="button danger" (click)="promptDeleteProduct(product)">Eliminar</button>
           </td>
@@ -54,6 +60,45 @@
       <div class="modal-actions">
         <button type="button" class="button secondary" (click)="closeDeleteConfirmation()">Cancelar</button>
         <button type="button" class="button danger" (click)="confirmDeleteProduct()">Eliminar</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="isRestockVisible()">
+    <section class="confirm-modal">
+      <h3>Ingresar stock</h3>
+      <p>Producto: <strong>{{ restockProduct()?.name }}</strong></p>
+
+      <div *ngIf="restockError()" class="alert">{{ restockError() }}</div>
+
+      <label class="form-field">
+        Cantidad
+        <input
+          type="number"
+          min="1"
+          step="1"
+          [ngModel]="restockQuantity()"
+          (ngModelChange)="restockQuantity.set($event)"
+        />
+      </label>
+
+      <label class="form-field">
+        Notas (opcional)
+        <input
+          type="text"
+          [ngModel]="restockNotes()"
+          (ngModelChange)="restockNotes.set($event)"
+          placeholder="Ej: Reposición proveedor"
+        />
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="button secondary" (click)="closeRestockModal()" [disabled]="isRestocking()">
+          Cancelar
+        </button>
+        <button type="button" class="button primary" (click)="confirmRestock()" [disabled]="isRestocking()">
+          {{ isRestocking() ? 'Guardando...' : 'Guardar' }}
+        </button>
       </div>
     </section>
   </div>

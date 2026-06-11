@@ -41,6 +41,11 @@
         </select>
       </label>
 
+      <label *ngIf="isNew()" class="form-field">
+        Stock inicial
+        <input type="number" formControlName="initial_stock" min="0" step="1" />
+      </label>
+
     </div>
     <div *ngIf="isNew()" class="upload-grid">
       <div class="upload-card">

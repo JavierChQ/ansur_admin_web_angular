@@ -1,4 +1,21 @@
-/* Styles migrated to src/styles.css */
 :host {
   display: block;
+}
+
+.stock-badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.stock-badge.out {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.confirm-modal .form-field {
+  margin-top: 1rem;
 }

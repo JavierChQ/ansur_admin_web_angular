@@ -30,6 +30,7 @@ export class ProductEditComponent {
       validators: [Validators.required, Validators.min(0)],
     }),
     id_category: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    initial_stock: new FormControl(0, { nonNullable: true, validators: [Validators.min(0)] }),
   });
 
   protected readonly priceWarning = computed(() => {
@@ -78,6 +79,7 @@ export class ProductEditComponent {
           purchase_price: null,
           sale_price: null,
           id_category: this.categories()[0]?.id ?? '',
+          initial_stock: 0,
         });
         return;
       }
@@ -109,7 +111,7 @@ export class ProductEditComponent {
 
     this.loadedPriceWarning.set(product.price_warning ?? '');
 
-    this.form.setValue({
+    this.form.patchValue({
       name: product.name,
       description: product.description ?? '',
       purchase_price: product.purchase_price,
@@ -128,6 +130,7 @@ export class ProductEditComponent {
     const purchasePrice = Number(this.form.controls.purchase_price.value);
     const salePrice = Number(this.form.controls.sale_price.value);
     const idCategory = this.form.controls.id_category.value;
+    const initialStock = Number(this.form.controls.initial_stock.value);
 
     const replacements = this.replacements();
     const hasReplacements = Object.keys(replacements).length > 0;
@@ -141,6 +144,7 @@ export class ProductEditComponent {
       formData.append('purchase_price', String(purchasePrice));
       formData.append('sale_price', String(salePrice));
       formData.append('id_category', idCategory);
+      formData.append('initial_stock', String(initialStock));
 
       // Append any selected images for new product
       for (const key of Object.keys(replacements)) {
@@ -209,6 +213,14 @@ export class ProductEditComponent {
     if (this.isNew() && Object.keys(this.replacements()).length === 0) {
       this.error.set('Debes seleccionar al menos una imagen para crear el producto.');
       return;
+    }
+
+    if (this.isNew()) {
+      const initialStock = this.form.controls.initial_stock.value;
+      if (!Number.isInteger(initialStock) || initialStock < 0) {
+        this.error.set('El stock inicial debe ser un número entero mayor o igual a 0.');
+        return;
+      }
     }
 
     this.showConfirm.set(true);
