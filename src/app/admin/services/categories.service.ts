@@ -22,7 +22,7 @@ export class CategoriesService {
     return this.http.post<Category>(CATEGORY_URL, category);
   }
 
-  updateCategory(id: string, category: FormData): Observable<Category> {
+  updateCategory(id: string, category: { name: string; description: string }): Observable<Category> {
     return this.http.put<Category>(`${CATEGORY_URL}/${id}`, category);
   }
 

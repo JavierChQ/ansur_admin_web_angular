@@ -90,11 +90,33 @@ export class CategoryEditComponent {
     this.isSaving.set(true);
     this.error.set('');
 
-    const formData = new FormData();
-    formData.append('name', this.form.controls.name.value);
-    formData.append('description', this.form.controls.description.value ?? '');
-
+    const name = this.form.controls.name.value.trim();
+    const description = (this.form.controls.description.value ?? '').trim();
     const imageFile = this.form.controls.image.value;
+
+    if (!name) {
+      this.error.set('El nombre es obligatorio.');
+      this.isSaving.set(false);
+      return;
+    }
+
+    if (this.isNew()) {
+      if (!description) {
+        this.error.set('La descripción es obligatoria.');
+        this.isSaving.set(false);
+        return;
+      }
+      if (!(imageFile instanceof File)) {
+        this.error.set('La imagen es obligatoria para crear una categoría.');
+        this.isSaving.set(false);
+        return;
+      }
+    }
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+
     if (imageFile instanceof File) {
       formData.append('file', imageFile);
     }
@@ -103,7 +125,7 @@ export class CategoryEditComponent {
       ? this.categoriesService.createCategory(formData)
       : imageFile instanceof File
       ? this.categoriesService.updateCategoryWithImage(this.id()!, formData)
-      : this.categoriesService.updateCategory(this.id()!, formData);
+      : this.categoriesService.updateCategory(this.id()!, { name, description });
 
     request.subscribe({
       next: () => this.router.navigate(['/admin/categories']),

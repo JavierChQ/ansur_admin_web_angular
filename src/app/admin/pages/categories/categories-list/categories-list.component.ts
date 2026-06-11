@@ -55,8 +55,11 @@ export class CategoriesListComponent {
         this.categories.update((list: Category[]) => list.filter((item: Category) => item.id !== category.id));
         this.closeDeleteConfirmation();
       },
-      error: () => {
-        this.error.set('No se pudo eliminar la categoría.');
+      error: (err) => {
+        const serverMessage =
+          (err?.error as { message?: string })?.message ||
+          'No se pudo eliminar la categoría.';
+        this.error.set(serverMessage);
         this.closeDeleteConfirmation();
       },
     });

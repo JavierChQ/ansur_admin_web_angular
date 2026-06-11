@@ -74,8 +74,11 @@ export class ProductListComponent {
         this.products.update((list: Product[]) => list.filter((item: Product) => item.id !== product.id));
         this.closeDeleteConfirmation();
       },
-      error: () => {
-        this.error.set('No se pudo eliminar el producto.');
+      error: (err) => {
+        const serverMessage =
+          (err?.error as { message?: string })?.message ||
+          'No se pudo eliminar el producto.';
+        this.error.set(serverMessage);
         this.closeDeleteConfirmation();
       },
     });

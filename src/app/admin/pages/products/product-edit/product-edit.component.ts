@@ -173,6 +173,11 @@ export class ProductEditComponent {
       return;
     }
 
+    if (this.isNew() && Object.keys(this.replacements()).length === 0) {
+      this.error.set('Debes seleccionar al menos una imagen para crear el producto.');
+      return;
+    }
+
     this.showConfirm.set(true);
   }
 
