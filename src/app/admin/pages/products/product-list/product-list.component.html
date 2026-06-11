@@ -17,7 +17,8 @@
         <tr>
           <th>Nombre</th>
           <th>Categoría</th>
-          <th>Precio</th>
+          <th>Precio compra</th>
+          <th>Precio venta</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -25,7 +26,11 @@
         <tr *ngFor="let product of products()">
           <td>{{ product.name }}</td>
           <td>{{ getCategoryName(product.id_category) }}</td>
-          <td>{{ product.price | currency:'USD':'symbol':'1.0-0' }}</td>
+          <td>{{ product.purchase_price | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td>
+            {{ product.sale_price | currency:'USD':'symbol':'1.2-2' }}
+            <span *ngIf="product.price_warning" class="price-warning-badge" [title]="product.price_warning">!</span>
+          </td>
           <td class="actions">
             <a class="button secondary" [routerLink]="[product.id]">Editar</a>
             <button type="button" class="button danger" (click)="promptDeleteProduct(product)">Eliminar</button>

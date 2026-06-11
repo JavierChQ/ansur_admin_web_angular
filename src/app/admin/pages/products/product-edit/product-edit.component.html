@@ -22,9 +22,16 @@
       </label>
 
       <label class="form-field">
-        Precio
-        <input type="number" formControlName="price" required min="0" />
+        Precio de compra
+        <input type="number" formControlName="purchase_price" required min="0" step="0.01" />
       </label>
+
+      <label class="form-field">
+        Precio de venta
+        <input type="number" formControlName="sale_price" required min="0" step="0.01" />
+      </label>
+
+      <p *ngIf="priceWarning()" class="price-warning">{{ priceWarning() }}</p>
 
       <label class="form-field">
         Categoría

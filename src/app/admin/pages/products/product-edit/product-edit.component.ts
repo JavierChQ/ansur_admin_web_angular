@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../../../services/categories.service';
@@ -15,12 +16,32 @@ import { Product } from '../../../../models/product.model';
   styleUrls: ['./product-edit.component.css'],
 })
 export class ProductEditComponent {
+  private readonly destroyRef = inject(DestroyRef);
+
   protected readonly form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl(''),
-    price: new FormControl<number | null>(null, { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
+    purchase_price: new FormControl<number | null>(null, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
+    sale_price: new FormControl<number | null>(null, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
     id_category: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
+
+  protected readonly priceWarning = computed(() => {
+    const purchase = this.form.controls.purchase_price.value;
+    const sale = this.form.controls.sale_price.value;
+    if (purchase === null || sale === null) {
+      return this.loadedPriceWarning();
+    }
+    return sale < purchase ? 'El precio de venta es menor al precio de compra' : '';
+  });
+
+  private readonly loadedPriceWarning = signal('');
 
   protected readonly categories = signal<Category[]>([]);
   protected readonly isSaving = signal(false);
@@ -38,6 +59,10 @@ export class ProductEditComponent {
     private readonly productsService: ProductsService,
     private readonly router: Router
   ) {
+    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.loadedPriceWarning.set('');
+    });
+
     this.loadCategories();
 
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -46,10 +71,12 @@ export class ProductEditComponent {
 
       if (!productId) {
         this.existingImages.set([]);
+        this.loadedPriceWarning.set('');
         this.form.reset({
           name: '',
           description: '',
-          price: null,
+          purchase_price: null,
+          sale_price: null,
           id_category: this.categories()[0]?.id ?? '',
         });
         return;
@@ -80,10 +107,13 @@ export class ProductEditComponent {
     const existingImages = [product.image1, product.image2].filter(Boolean) as string[];
     this.existingImages.set(existingImages);
 
+    this.loadedPriceWarning.set(product.price_warning ?? '');
+
     this.form.setValue({
       name: product.name,
       description: product.description ?? '',
-      price: product.price,
+      purchase_price: product.purchase_price,
+      sale_price: product.sale_price,
       id_category: product.id_category,
     });
   }
@@ -95,8 +125,8 @@ export class ProductEditComponent {
     this.error.set('');
     const name = this.form.controls.name.value;
     const description = this.form.controls.description.value ?? '';
-    const priceVal = this.form.controls.price.value;
-    const priceNumber = priceVal === null ? null : Number(priceVal);
+    const purchasePrice = Number(this.form.controls.purchase_price.value);
+    const salePrice = Number(this.form.controls.sale_price.value);
     const idCategory = this.form.controls.id_category.value;
 
     const replacements = this.replacements();
@@ -108,7 +138,8 @@ export class ProductEditComponent {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('description', description);
-      formData.append('price', String(priceNumber));
+      formData.append('purchase_price', String(purchasePrice));
+      formData.append('sale_price', String(salePrice));
       formData.append('id_category', idCategory);
 
       // Append any selected images for new product
@@ -127,7 +158,8 @@ export class ProductEditComponent {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
-        formData.append('price', String(priceNumber));
+        formData.append('purchase_price', String(purchasePrice));
+        formData.append('sale_price', String(salePrice));
         formData.append('id_category', idCategory);
 
         // Append replacement files with their target indices
@@ -145,7 +177,8 @@ export class ProductEditComponent {
         const payload: Record<string, unknown> = {
           name,
           description,
-          price: priceNumber,
+          purchase_price: purchasePrice,
+          sale_price: salePrice,
           id_category: idCategory,
         };
 
