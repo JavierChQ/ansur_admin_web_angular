@@ -1,13 +1,75 @@
-<section class="order-detail-page page-layout">
+<section class="order-detail-page page-layout" *ngIf="order() as order">
   <header class="page-header">
     <div>
-      <h2>Detalle del pedido</h2>
-      <p>Información del pedido seleccionado.</p>
+      <h2>Pedido #{{ order.id }}</h2>
+      <p>{{ getStatusLabel(order.status) }} · {{ order.created_at | date:'medium' }}</p>
     </div>
+    <a routerLink="/admin/orders" class="button secondary">Volver a pedidos</a>
   </header>
 
+  <div *ngIf="error()" class="alert">{{ error() }}</div>
+  <div *ngIf="actionMessage()" class="alert success">{{ actionMessage() }}</div>
+
+  <div class="detail-grid">
+    <div class="card">
+      <h3>Cliente</h3>
+      <p><strong>Nombre:</strong> {{ getCustomerName(order) }}</p>
+      <p><strong>Correo:</strong> {{ order.customer_email || order.user?.email || '—' }}</p>
+      <p><strong>Celular:</strong> {{ order.customer_phone || order.user?.phone || '—' }}</p>
+      <p><strong>Documento:</strong> {{ order.customer_doc_type || '—' }} {{ order.customer_doc_number || '' }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Entrega</h3>
+      <p><strong>Tipo:</strong> {{ getDeliveryTypeLabel(order) }}</p>
+      <ng-container *ngIf="order.delivery_type === 'delivery'">
+        <p><strong>Departamento:</strong> {{ order.departamento || '—' }}</p>
+        <p><strong>Provincia:</strong> {{ order.provincia || '—' }}</p>
+        <p><strong>Distrito:</strong> {{ order.distrito || '—' }}</p>
+        <p><strong>Dirección:</strong> {{ order.direccion || '—' }}</p>
+        <p><strong>Referencia:</strong> {{ order.referencia || '—' }}</p>
+        <p *ngIf="order.delivery_fee"><strong>Costo envío:</strong> S/ {{ order.delivery_fee | number:'1.2-2' }}</p>
+      </ng-container>
+      <p><strong>Recibe/recoge:</strong> {{ getReceptorName(order) }}</p>
+      <p *ngIf="order.receptor_doc_type">
+        <strong>Doc. receptor:</strong> {{ order.receptor_doc_type }} {{ order.receptor_doc_number }}
+      </p>
+    </div>
+  </div>
+
   <div class="card">
-    <p>ID del pedido: <strong>1234</strong></p>
-    <p>Estado: <strong>Pendiente</strong></p>
+    <h3>Productos</h3>
+    <table class="table" *ngIf="order.orderHasProducts?.length">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>P. unitario</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let line of order.orderHasProducts">
+          <td>{{ line.product?.name || ('Producto #' + line.id_product) }}</td>
+          <td>{{ line.quantity }}</td>
+          <td>S/ {{ getLineUnitPrice(line) | number:'1.2-2' }}</td>
+          <td>S/ {{ getLineSubtotal(line) | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <p>Subtotal productos: S/ {{ getProductsSubtotal(order) | number:'1.2-2' }}</p>
+      <p *ngIf="order.delivery_fee">Envío: S/ {{ order.delivery_fee | number:'1.2-2' }}</p>
+      <p class="total-line"><strong>Total:</strong> S/ {{ order.amount | number:'1.2-2' }}</p>
+    </div>
+  </div>
+
+  <div class="actions-row" *ngIf="order.status === 'PAGADO'">
+    <button type="button" class="button primary" (click)="markDispatched()" [disabled]="isUpdating()">
+      {{ isUpdating() ? 'Actualizando...' : 'Marcar como despachado' }}
+    </button>
   </div>
 </section>
+
+<div *ngIf="isLoading()">Cargando pedido...</div>

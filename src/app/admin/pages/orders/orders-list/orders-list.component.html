@@ -1,12 +1,51 @@
 <section class="orders-page page-layout">
-  <header class="page-header">
-    <div>
-      <h2>Pedidos</h2>
-      <p>Lista de pedidos recientes para revisar y gestionar.</p>
-    </div>
-  </header>
+  <div class="table-card">
+    <header class="page-header">
+      <div>
+        <h2>Pedidos</h2>
+        <p>Lista de pedidos recientes para revisar y gestionar.</p>
+      </div>
+    </header>
 
-  <div class="card">
-    <p>Tabla de pedidos todavía no implementada.</p>
+    <div *ngIf="error()" class="alert">{{ error() }}</div>
+    <div *ngIf="isLoading()">Cargando pedidos...</div>
+
+    <div *ngIf="!isLoading() && orders().length > 0" class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Entrega</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders()">
+            <td>#{{ order.id }}</td>
+            <td>
+              <div>{{ getCustomerName(order) }}</div>
+              <small>{{ order.customer_email || order.user?.email }}</small>
+            </td>
+            <td>{{ getDeliveryLabel(order) }}</td>
+            <td>S/ {{ order.amount | number:'1.2-2' }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </td>
+            <td>{{ order.created_at | date:'short' }}</td>
+            <td class="actions">
+              <a class="button secondary" [routerLink]="[order.id]">Ver detalle</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!isLoading() && !orders().length" class="empty-state">No hay pedidos registrados.</p>
   </div>
 </section>
