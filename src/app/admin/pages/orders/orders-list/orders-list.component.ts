@@ -3,6 +3,10 @@ import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Order, OrderStatus } from '../../../models/order.model';
 import { OrdersService } from '../../../services/orders.service';
+import {
+  getGuestOrderBadgeClass,
+  getGuestOrderBadgeLabel,
+} from '../../../utils/guest-badge.util';
 
 @Component({
   selector: 'app-orders-list',
@@ -15,6 +19,9 @@ export class OrdersListComponent {
   protected readonly orders = signal<Order[]>([]);
   protected readonly isLoading = signal(true);
   protected readonly error = signal('');
+
+  protected getGuestOrderBadgeLabel = getGuestOrderBadgeLabel;
+  protected getGuestOrderBadgeClass = getGuestOrderBadgeClass;
 
   constructor(private readonly ordersService: OrdersService) {
     this.loadOrders();

@@ -29,6 +29,13 @@
             <td>
               <div>{{ getCustomerName(order) }}</div>
               <small>{{ order.customer_email || order.user?.email }}</small>
+              <span
+                *ngIf="getGuestOrderBadgeLabel(order) as guestLabel"
+                class="account-badge"
+                [ngClass]="getGuestOrderBadgeClass(order)"
+              >
+                {{ guestLabel }}
+              </span>
             </td>
             <td>{{ getDeliveryLabel(order) }}</td>
             <td>S/ {{ order.amount | number:'1.2-2' }}</td>

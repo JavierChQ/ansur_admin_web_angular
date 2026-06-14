@@ -26,6 +26,8 @@ export interface OrderUser {
   lastname: string;
   email: string;
   phone?: string;
+  is_guest?: boolean;
+  password_not_set?: boolean;
 }
 
 export interface OrderAddress {
@@ -36,8 +38,9 @@ export interface OrderAddress {
 
 export interface Order {
   id: number;
-  id_client: number;
-  id_address: number;
+  id_client: number | null;
+  id_address: number | null;
+  is_guest_order?: boolean;
   amount: number;
   status: OrderStatus;
   expires_at?: string;

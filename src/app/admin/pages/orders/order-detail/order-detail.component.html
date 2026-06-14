@@ -17,6 +17,22 @@
       <p><strong>Correo:</strong> {{ order.customer_email || order.user?.email || '—' }}</p>
       <p><strong>Celular:</strong> {{ order.customer_phone || order.user?.phone || '—' }}</p>
       <p><strong>Documento:</strong> {{ order.customer_doc_type || '—' }} {{ order.customer_doc_number || '' }}</p>
+      <div class="badge-row">
+        <span
+          *ngIf="getGuestOrderBadgeLabel(order) as guestOrderLabel"
+          class="account-badge"
+          [ngClass]="getGuestOrderBadgeClass(order)"
+        >
+          {{ guestOrderLabel }}
+        </span>
+        <span
+          *ngIf="getUserGuestBadgeLabel(order.user) as guestUserLabel"
+          class="account-badge"
+          [ngClass]="getUserGuestBadgeClass(order.user)"
+        >
+          {{ guestUserLabel }}
+        </span>
+      </div>
     </div>
 
     <div class="card">

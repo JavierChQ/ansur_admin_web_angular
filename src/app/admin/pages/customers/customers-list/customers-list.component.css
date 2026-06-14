@@ -1,4 +1,9 @@
-/* Styles migrated to src/styles.css */
 :host {
   display: block;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }

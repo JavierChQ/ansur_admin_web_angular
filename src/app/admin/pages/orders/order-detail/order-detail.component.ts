@@ -4,6 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Order, OrderProductLine, OrderStatus } from '../../../models/order.model';
 import { OrdersService } from '../../../services/orders.service';
 import { getOrderDisplayFields } from '../../../utils/order-display.util';
+import {
+  getGuestOrderBadgeClass,
+  getGuestOrderBadgeLabel,
+  getUserGuestBadgeClass,
+  getUserGuestBadgeLabel,
+} from '../../../utils/guest-badge.util';
 
 @Component({
   selector: 'app-order-detail',
@@ -18,6 +24,11 @@ export class OrderDetailComponent {
   protected readonly error = signal('');
   protected readonly isUpdating = signal(false);
   protected readonly actionMessage = signal('');
+
+  protected getGuestOrderBadgeLabel = getGuestOrderBadgeLabel;
+  protected getGuestOrderBadgeClass = getGuestOrderBadgeClass;
+  protected getUserGuestBadgeLabel = getUserGuestBadgeLabel;
+  protected getUserGuestBadgeClass = getUserGuestBadgeClass;
 
   constructor(
     private readonly route: ActivatedRoute,

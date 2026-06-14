@@ -2,11 +2,67 @@
   <header class="page-header">
     <div>
       <h2>Clientes</h2>
-      <p>Mantén un registro de los clientes y su información de contacto.</p>
+      <p>Usuarios con rol CLIENT. Los badges indican cuentas creadas por checkout invitado.</p>
+    </div>
+    <div class="header-actions">
+      <button
+        type="button"
+        class="button secondary"
+        [disabled]="isMigrating()"
+        (click)="runLegacyMigration(true)"
+      >
+        {{ isMigrating() ? 'Procesando...' : 'Simular migración legacy' }}
+      </button>
+      <button
+        type="button"
+        class="button primary"
+        [disabled]="isMigrating()"
+        (click)="runLegacyMigration(false)"
+      >
+        Migrar legacy + enviar correos
+      </button>
     </div>
   </header>
 
-  <div class="card">
-    <p>Listado de clientes todavía no implementado.</p>
+  <div *ngIf="error()" class="alert">{{ error() }}</div>
+  <div *ngIf="migrationMessage()" class="alert success">{{ migrationMessage() }}</div>
+  <div *ngIf="migrationError()" class="alert">{{ migrationError() }}</div>
+  <div *ngIf="isLoading()">Cargando clientes...</div>
+
+  <div class="table-card" *ngIf="!isLoading() && customers().length > 0">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Contacto</th>
+            <th>Estado cuenta</th>
+            <th>Registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of customers()">
+            <td>#{{ customer.id }}</td>
+            <td>
+              <div>{{ getCustomerFullName(customer) }}</div>
+              <small>{{ customer.email }}</small>
+            </td>
+            <td>{{ customer.phone || '—' }}</td>
+            <td>
+              <span
+                class="account-badge"
+                [ngClass]="getCustomerAccountStatusClass(getCustomerAccountStatus(customer))"
+              >
+                {{ getCustomerAccountStatusLabel(getCustomerAccountStatus(customer)) }}
+              </span>
+            </td>
+            <td>{{ customer.created_at | date: 'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
+  <p *ngIf="!isLoading() && !customers().length" class="empty-state">No hay clientes registrados.</p>
 </section>
